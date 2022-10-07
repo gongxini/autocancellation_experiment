@@ -2,12 +2,15 @@
 
 function normal {
 $POSTGRES_SYSBENCH_DIR/bin/sysbench  --pgsql-db=postgres --pgsql-user=$(whoami) --tables=1 --table-size=1000000 --threads=1 --time=90 $POSTGRES_SYSBENCH_DIR/share/sysbench/select_random_points.lua --report-interval=1 --percentile=50 run &
-#iostat -m 1 > log.txt &
-sleep 10
+sleep 20
 ./back.sh &
+#./back2.sh >> /dev/null &
+echo "interference"
 sleep 10
-#$POSTGRES_SYSBENCH_DIR/bin/sysbench  --pgsql-db=postgres --pgsql-user=$(whoami) --tables=2 --table-size=1000000 --threads=1 --time=90 $POSTGRES_SYSBENCH_DIR/share/sysbench/select_random_points.lua --report-interval=1 --percentile=50 run &
-sleep 90
+#./cancel.sh
+sleep 60
+echo "interference end"
+sleep 10
 }
 
 postgres -D $PSANDBOX_POSTGRES_DIR/data/ --config-file=$PSANDBOX_POSTGRES_DIR/data/postgresql.conf &
